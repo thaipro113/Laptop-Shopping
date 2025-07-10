@@ -1,0 +1,59 @@
+﻿@model IEnumerable<CNWEB22CT1.Models.OrderDetails>
+@{
+    ViewData["title"] = "OrderDetails";
+    var totalAmount = Model?.Sum(item => item.Price * item.Quantity) ?? 0;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chi tiết đơn hàng</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Chi tiết đơn hàng - @Model.FirstOrDefault()?.OrderCode</h1>
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Sản phẩm</th>
+                    <th>Hình ảnh</th>
+                    <th>Mã sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    int index = 1;
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@index</td>
+                            <td>@item.Product?.Name</td>
+                            <td><img src="~/media/products/@item.Product.Image" width="100"></td>
+                            <td>@item.ProductId</td>
+                            <td>@item.Price.ToString("#,##0 VNĐ", new System.Globalization.CultureInfo("vi-VN"))</td>
+                            <td>@item.Quantity</td>
+                            <td>@((item.Price * item.Quantity).ToString("#,##0 VNĐ", new System.Globalization.CultureInfo("vi-VN")))</td>
+                        </tr>
+                        index++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">Không có dữ liệu chi tiết đơn hàng.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <!-- Hiển thị tổng thành tiền -->
+        <div class="text-end mt-3">
+            <h4><strong>Tổng thành tiền: @totalAmount.ToString("#,##0 'VNĐ'")</strong></h4>
+        </div>
+        <a asp-action="UserOrders" class="btn btn-success btn-sm">Quay lại danh sách đơn hàng</a>
+    </div>
+</body>
+</html>

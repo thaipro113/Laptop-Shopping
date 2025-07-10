@@ -1,0 +1,100 @@
+﻿@model IEnumerable<OrderModel>
+@{
+    ViewData["title"] = "Order Listed";
+}
+<h3>List Order</h3>
+<table class="table">
+    <thead>
+        <tr>
+      
+            <th scope="col">Mã đơn hàng</th>
+            <th scope="col">UserName(Email)</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Ngày đặt hàng</th>
+
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.OrderCode</th>
+                <td>@item.UserName</td>
+                <td>
+                    @if (item.Status == 1)
+                    {
+                        <span class="text text-warning">Đơn hàng mới</span>
+                        <a asp-action="ApproveOrder" asp-controller="Order" asp-route-ordercode="@item.OrderCode">
+                            ->Duyệt đơn
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="text text-success">Đơn hàng thành công!</span>
+                    }
+                </td>
+
+                <td>@item.CreatedDate</td>
+                <td>
+                    <a asp-action="ViewOrder" class="btn btn-warning btn-sm" asp-controller="Order" asp-route-ordercode="@item.OrderCode">Xem</a>
+                    <a asp-action="Delete" class="btn btn-danger btn-sm" asp-controller="Order" asp-route-Id="@item.Id">Xóa</a>
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
+@*
+    @model IEnumerable<OrderModel>
+@{
+    ViewData["title"] = "Order Listed";
+    // Lấy múi giờ Việt Nam
+    var vietNamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+}
+<h3>List Order</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Mã đơn hàng</th>
+            <th scope="col">UserName (Email)</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Ngày đặt hàng</th>
+            <th scope="col">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            // Chuyển đổi thời gian từ UTC sang múi giờ Việt Nam và giảm đi 1 giờ
+            var createdDateVN = TimeZoneInfo.ConvertTimeFromUtc(item.CreatedDate, vietNamTimeZone);
+
+            <tr>
+                <th scope="row">@item.OrderCode</th>
+                <td>@item.UserName</td>
+                <td>
+                    @if (item.Status == 1)
+                    {
+                        <span class="text text-warning">Đơn hàng mới</span>
+                        <a asp-action="ApproveOrder" asp-controller="Order" asp-route-ordercode="@item.OrderCode">
+                            ->Duyệt đơn
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="text text-success">Đơn hàng thành công!</span>
+                    }
+                </td>
+                <td>@createdDateVN.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    <a asp-action="ViewOrder" class="btn btn-warning btn-sm" asp-controller="Order" asp-route-ordercode="@item.OrderCode">Xem</a>
+                    <a asp-action="Delete" class="btn btn-danger btn-sm" asp-controller="Order" asp-route-Id="@item.Id">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+*@

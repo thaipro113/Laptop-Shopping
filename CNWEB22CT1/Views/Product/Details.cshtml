@@ -1,0 +1,125 @@
+﻿
+<div class="row">
+	<div class="col-sm-3">
+		@Html.Partial("_SidebarPartial")
+	</div>
+	 <style>
+	 	span {
+	 		width: 500px;
+	 	}
+	 </style>
+	<div class="col-sm-9 padding-right">
+		<div class="product-details">
+			<!--product-details-->
+			<div class="col-sm-5">
+				<div class="view-product">
+					<img src="~/media/products/@Model.Image" alt="@Model.Name" style="max-height: 340px;" />
+					
+				</div>
+				<div id="similar-product" class="carousel slide" data-ride="carousel">
+
+					<!-- Wrapper for slides -->
+					<div class="carousel-inner">
+						<div class="item ">
+							<a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
+							<a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
+							<a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
+						</div>
+						
+
+					</div>
+
+					<!-- Controls -->
+
+				</div>
+
+			</div>
+			<div class="col-sm-7">
+				<div class="product-information">
+					<!--/product-information-->
+					<h2>@Model.Name</h2>
+					<span>
+						<span>@Model.Price.ToString("#,##0 VNĐ", new System.Globalization.CultureInfo("vi-VN"))</span>
+						<a class="btn btn-default cart" asp-action="Add" asp-controller="Cart" asp-route-Id="@Model.Id">
+							<i class="fa fa-shopping-cart"></i> Add to cart
+						</a>
+					</span>
+					<p><b>Availability:</b> In Stock</p>
+					<p><b>Condition:</b> New</p>
+					<p><b>Brand:</b> @Model.Brand.Name</p>
+					<p><b>Category:</b> @Model.Category.Name</p>
+				</div><!--/product-information-->
+			</div>
+
+		</div><!--/product-details-->
+
+		<div class="category-tab shop-details-tab">
+			<!--category-tab-->
+			<div class="col-sm-12">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+
+				</ul>
+			</div>
+			<div class="tab-content">
+				<div class="tab-pane fade active in" id="details">
+					@Model.Description
+				</div>
+
+
+
+			</div>
+		</div><!--/category-tab-->
+
+		<div class="recommended_items">
+			<h2 class="title text-center">recommended items</h2>
+
+			<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+				<div class="carousel-inner">
+					@{
+						var chunkSize = 3; // Số sản phẩm mỗi slide
+						var recommendedProducts = (List<ProductModel>)ViewBag.RecommendedProducts;
+						var totalChunks = (int)Math.Ceiling((double)recommendedProducts.Count / chunkSize);
+					}
+
+					@for (int i = 0; i < totalChunks; i++)
+					{
+						var items = recommendedProducts.Skip(i * chunkSize).Take(chunkSize);
+						<div class="item @(i == 0 ? "active" : "")">
+							@foreach (var product in items)
+							{
+								<div class="col-sm-4">
+									<div class="product-image-wrapper">
+										<div class="single-products">
+											<div class="productinfo text-center">
+												<a asp-action="Details" asp-controller="Product" asp-route-Id="@product.Id" >
+												<img src="~/media/products/@product.Image" alt="@product.Name" class="img-fluid" />
+												<h2>@product.Price.ToString("#,##0 VNĐ")</h2>
+												<p>@product.Name</p>
+												<a class="btn btn-default add-to-cart" asp-action="Add" asp-controller="Cart" asp-route-Id="@product.Id">
+													<i class="fa fa-shopping-cart"></i> Add to cart
+												</a>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							}
+						</div>
+					}
+
+				</div>
+
+				<a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+					<i class="fa fa-angle-left"></i>
+				</a>
+				<a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+					<i class="fa fa-angle-right"></i>
+				</a>
+			</div>
+		</div>
+
+
+	</div>
+</div>
+

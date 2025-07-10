@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["title"] = "User Listed";
+}
+<h3>List User</h3>
+<a asp-area="Admin" asp-action="Create" class="btn btn-success btn-sm" asp-controller="User">Thêm User</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">UserName</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone Number</th> <!-- Thêm cột số điện thoại -->
+            <th scope="col">PasswordHash</th>
+            <th scope="col">Role</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usersWithRoles in Model)
+        {
+            <tr>
+                <td>@usersWithRoles.User.UserName</td>
+                <td>@usersWithRoles.User.Email</td>
+                <td>@usersWithRoles.User.PhoneNumber</td> <!-- Hiển thị số điện thoại -->
+                <td>@usersWithRoles.User.PasswordHash</td>
+                <td>@usersWithRoles.RoleName</td>
+                <td>
+                    <a asp-action="Edit" class="btn btn-warning btn-sm" asp-controller="User" asp-route-Id="@usersWithRoles.User.Id">Sửa</a>
+                    <a asp-action="Delete" class="btn btn-danger btn-sm" asp-controller="User" asp-route-Id="@usersWithRoles.User.Id">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

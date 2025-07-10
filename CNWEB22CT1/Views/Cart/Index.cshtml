@@ -1,0 +1,145 @@
+﻿<section id="cart_items">
+    <style>
+        /* Điều chỉnh bảng */
+        .table {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+            .table th {
+                text-transform: uppercase;
+                font-weight: bold;
+                background-color: #ffa500;
+                color: #fff;
+            }
+
+        .text-wrap {
+            word-wrap: break-word;
+            white-space: normal;
+        }
+
+        /* Điều chỉnh nút */
+        .btn-sm {
+            padding: 5px 10px;
+        }
+
+        .btn-danger, .btn-success {
+            width: 100px;
+            text-align: center;
+        }
+
+        /* Hình ảnh sản phẩm */
+        .img-fluid {
+            max-height: 100px;
+            object-fit: cover;
+        }
+
+        /* Điều chỉnh căn chỉnh nút + và - với input */
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .quantity-controls .btn-sm {
+                width: 30px;
+                height: 30px;
+                padding: 0;
+                font-size: 18px;
+                text-align: center;
+            }
+
+        .cart_quantity_input {
+            width: 60px;
+            text-align: center;
+        }
+    </style>
+
+    <div class="container mt-5">
+        <div class="breadcrumbs mb-3">
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li class="active">Shopping Cart</li>
+            </ol>
+        </div>
+        <div class="table-responsive cart_info">
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>@if(User.Identity?.IsAuthenticated ?? false ){
+                    @if (Model.CartItems.Count > 0)
+                    {
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="#">
+                                        <img src="~/media/products/@item.Image" alt="Product Image" class="img-fluid rounded">
+                                    </a>
+                                </td>
+                                <td>
+                                    <h5 class="text-wrap">@item.ProductName</h5>
+                                </td>
+                                <td>
+                                        <p>@item.Price.ToString("#,##0 VNĐ", new System.Globalization.CultureInfo("vi-VN"))</p>
+                                </td>
+                                <td>
+                                    <div class="quantity-controls">
+                                        <a class="btn btn-outline-secondary btn-sm" asp-controller="Cart" asp-action="Increase" asp-route-Id="@item.ProductId">+</a>
+                                        <input type="text" class="form-control cart_quantity_input" value="@item.Quantity" readonly>
+                                        <a class="btn btn-outline-secondary btn-sm" asp-controller="Cart" asp-action="Decrease" asp-route-Id="@item.ProductId">-</a>
+                                    </div>
+                                </td>
+                                    <td>
+                                        @((item.Quantity * item.Price).ToString("#,##0 'VNĐ'", new System.Globalization.CultureInfo("vi-VN")))
+                                    </td>
+
+                                <td>
+                                    <a class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="Remove" asp-route-Id="@item.ProductId">
+                                        <i class="fa fa-trash"></i> Remove
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td colspan="4" class="text-right font-weight-bold">Grand Total:</td>
+                                <td colspan="2" class="text-left font-weight-bold">@Model.Grantotal.ToString("#,##0 VNĐ", new System.Globalization.CultureInfo("vi-VN"))</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="text-right">
+                                <a class="btn btn-danger" asp-controller="Cart" asp-action="Clear">Clear Cart</a>
+                                    <a class="btn btn-success" asp-controller="Checkout" asp-action="Checkout">Checkout</a>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <h4>Your cart is empty</h4>
+                            </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <h4>Vui lòng đăng nhập để mua sản phẩm</h4>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
