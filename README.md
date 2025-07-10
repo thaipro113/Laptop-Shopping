@@ -49,7 +49,7 @@
       git clone https://github.com/thaipro113/Laptop-Shopping.git
 2. Mở solution bằng Visual Studio
 
-3.Cấu hình chuỗi kết nối trong appsettings.json (ASP.NET Core) hoặc Web.config (ASP.NET MVC):
+3. Cấu hình chuỗi kết nối trong appsettings.json (ASP.NET Core) hoặc Web.config (ASP.NET MVC):
 
 json
 "ConnectionStrings": {
@@ -60,7 +60,7 @@ json
 
 dotnet ef database update
 
-5.Chạy project:
+5. Chạy project:
 
 dotnet run
 
